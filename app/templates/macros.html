@@ -1,0 +1,8 @@
+{% macro displayFeedback(feedback_list) %}
+    {% for feedback in feedback_list %}
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 review-card">
+        <h2> {{ feddback.title}} </h2>
+        <p> {{ feedback.feedback| truncate(30) }}</p>
+    </div>
+    {% endfor %}
+{% endmacro %}

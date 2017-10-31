@@ -1,0 +1,27 @@
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+
+{% block styles%}
+  {{super()}}
+  <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+  {% endblock%}
+
+
+  {% block content %}
+
+    <h3>pickup lines</h3>
+    <ul>
+
+      {{macro.displayPitchList(pickupline_pitch)}}
+    </ul>
+
+    <h3>promotions</h3>
+
+    {{macro.displayPitchList(promotion_pitch)}}
+</ul>
+
+<h3>products</h3>
+<ul>
+  {{macro.displayPitchList(prouct_pitch)}}
+</ul>
+{% endblock %}
