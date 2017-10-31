@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <title> {{ title }} </title>
+    <div class="container">
+      {% for pitch in get_pitches(category_id)}
+      <ul>
+        pitch.{pitch_body}
+      </ul>j
