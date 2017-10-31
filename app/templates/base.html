@@ -1,10 +1,6 @@
 {% extends 'bootstrap/base.html'%}
-<!-- Navbar Block -->
-{% block styles%}
-  {{super()}}
-  <link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
-  {% endblock%}
-  <div class="landingpage">
+
+  <div>
     {% block navbar %}
       {% include 'navbar.html' %}
     {% endblock %}
