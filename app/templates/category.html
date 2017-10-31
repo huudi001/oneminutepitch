@@ -1,0 +1,32 @@
+{ %block content %}
+<title> {{ title }} </title>
+{% for category in get_categories() %}
+            <div class="container">
+              <ul>
+                <h1> LIST OF {{category.name }} <H1/>
+              </ul>
+
+
+
+         </div>
+
+
+
+ {% endfor %}
+ <div>
+   <h3>
+   <a href="/category/pitch/new/{{category.id}}">
+     MAKE A PITCH
+
+     </a>
+
+  </h3>
+</div>
+
+
+
+
+
+
+
+ {% endblock %}
