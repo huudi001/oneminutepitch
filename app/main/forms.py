@@ -11,7 +11,7 @@ class FeedbackForm(FlaskForm):
 
 class PitchForm(FlaskForm):
 
-    choice = [("science","science"),]
+    choice = [("science","science"),("technology", "technology"),("entertainment","entertainment")]
     title = StringField('Feedback title',validators=[Required()])
      pitch= TextAreaField('Pitch review', validators=[Required()])
      category = SelectField('category'choices = choice)
