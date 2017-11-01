@@ -1,7 +1,11 @@
-from flask import render_template
+from flask import render_template,redirect,url_for,request
 from flask_login import login_required
+from .. import db
 from . import auth
+from flask_login import login_user
 from .forms import LoginForm
+from .forms import RegistrationForm
+from ..models import User
 
 @auth.route('/register',methods = ["GET","POST"])
 def register():

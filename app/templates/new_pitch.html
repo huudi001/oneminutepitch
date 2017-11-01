@@ -1,11 +1,9 @@
+{% import 'bootstrap/wtf.html' as wtf%}
 {% extends 'base.html' %}
-
-
 {% block content %}
-    <title> {{ title }} </title>
-    <div class="container">
-      {% for pitch in get_pitches(category_id)}
-      <ul>
-        pitch.{pitch_body}
-      </ul>j
-  
+<div class="col-md-4">
+      {{wtf.quick_form(pitch_form)}}
+</div>
+
+
+{% endblock %}
