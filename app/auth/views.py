@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_login import login_required
 from . import auth
-
+from .forms import LoginForm
 
 @auth.route('/register',methods = ["GET","POST"])
 def register():

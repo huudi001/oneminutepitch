@@ -1,13 +1,15 @@
 from . import db
+from . import login_manager
 from flask_login import UserMixin
 
 from werkzeug.security import generate_password_hash,check_password_hash
 
 @login_manager.user_loader
 def load_user(user_id):
-return User.query.get(int(user_id))
 
-class User(UserMixind,db.Model):
+    return User.query.get(int(user_id))
+
+class User(UserMixin,db.Model):
     __tablename__ = 'users'
     user_id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255))
@@ -102,7 +104,7 @@ class Vote(db.Model):
     __tablename__ = 'votes'
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id")
+    pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
     vote_count =  db.Column(db.Integer)
 
     def save_vote(self):
