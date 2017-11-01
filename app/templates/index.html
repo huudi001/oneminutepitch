@@ -8,18 +8,14 @@
 
     <div class="container">
 
-        <h2>List of Categories</h2>
-
+      <a href="/new_pitch"></a>
+      <h3> make a pitch</h3>
+        {% for pitch in pitches %}
         <ul>
-            {{ macro.displayGroupList(groups) }}
-        </ul>
+          {{pitch.name}}
 
-        <h3>
-            <a href="/group/new">
-                Create Category
-            </a>
-        </h3>
-
+        {% endfor %}
     </div>
+
 
 {% endblock %}
