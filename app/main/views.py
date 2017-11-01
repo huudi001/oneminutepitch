@@ -4,7 +4,7 @@ from flask_login import login_user,logout_user,login_required
 from . import main
 from ..models import User,Pitch
 from .forms import PitchForm
-
+        
 @main.route('/')
 def index():
     # category = Category.query.all()
