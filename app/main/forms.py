@@ -5,7 +5,7 @@ from wtforms.validators import Required
 class FeedbackForm(FlaskForm):
 
     title = StringField('Feedback title',validators=[Required()])
-    feedback = TextAreaField('Pitch feedback', validators=[Required()])
+    feedback = TextAreaField(' feedback', validators=[Required()])
     submit = SubmitField('Submit')
 
 

@@ -10,11 +10,14 @@ def load_user(user_id):
 
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
-    id= db.Column(db.Integer,primary_key = True)
+    id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(255))
-    email =email = db.Column(db.String(255),unique = True,index = True)
+    email = db.Column(db.String(255),unique = True,index = True)
     pass_secure =  db.Column(db.String(255))
     pitches = db.relationship('Pitch', backref='user', lazy='dynamic')
+    feedbacks = db.relationship('Feedback', backref='user', lazy='dynamic')
+
+
 
 
     @property
@@ -34,29 +37,17 @@ class User(UserMixin,db.Model):
         return  {{self.username}}
 
 
-# class Category(db.Model):
-#
-#     __tablename__ = 'categories'
-#
-#
-#     id = db.Column(db.Integer, primary_key = True)
-#
-#     category_name = db.Column(db.String(255))
-#
-#     pitches = db.relationship('Pitch', backref='category', lazy='dynamic')
-#
-#     def save_category(self):
-#         db.session.add(self)
-#         db.session.commit()
-#
-#     @classmethod
-#     def get_categories(cls):
-#
-#
-#         categories = Category.query.all()
-#
-#         return categories
+class Category(db.Model):
+    __tablename__ = 'categories'
 
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(255), index = True)
+    pitches = db.relationship('Pitch', backref = 'category', lazy = "dynamic")
+
+    @classmethod
+    def get_categories(cls):
+        categories = Category.query.all()
+        return categories
 
 class Pitch(db.Model):
 
@@ -67,10 +58,10 @@ class Pitch(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     pitch_body = db.Column(db.String(255))
     title = db.Column(db.String(255))
-    # categories_id = db.Column(db.Integer, db.ForeignKey("categories.id") )
-    use_id= db.Column(db.Integer, db.ForeignKey("users.id") )
-    #feedbacks = db.relationship('Feedback', backref='pitch', lazy='dynamic')
-    # votes = db.relationship('Vote', backref='pitch', lazy='dynamic')
+    categories_id = db.Column(db.Integer, db.ForeignKey("categories.id") )
+    user_id= db.Column(db.Integer, db.ForeignKey("users.id") )
+    feedbacks= db.relationship('Feedback', backref='pitch', lazy='dynamic')
+
 
     def save_pitch(self):
 
@@ -78,39 +69,27 @@ class Pitch(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_pitches(cls,category_id):
-        #pitches = Pitch.query.order_by(Pitch.id.desc()).filter_by(category_id=category_id).all()
-        pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id") )
+    def get_pitches(cls, id):
+        pitches = Pitch.query.filter_by(category_id = id).all()
         return pitches
 
 
-# class Feedback(db.Model):
-#      __tablename__ = 'feedbacks'
-#      id = db.Column(db.Integer, primary_key = True)
-#      feedback_body = db.Column(db.String(255))
-#      user_id = db.Column(db.Integer, db.ForeignKey("users.id") )
-#
-#      def save_feedback(self):
-#         db.session.add(self)
-#         db.session.commit()
-#
-#      @classmethod
-#      def get_feedbacks(cls,pitch_id):
-#          feedbacks= Feedback.query.filter_by(pitch_id=pitch_id).all()
-#          return feedbacks
 
-# class Vote(db.Model):
-#     __tablename__ = 'votes'
-#     id = db.Column(db.Integer, primary_key = True)
-    # user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    # pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id"))
-    # vote_count =  db.Column(db.Integer)
 
-#     def save_vote(self):
-#         db.session.add(self)
-#         db.session.commit()
-#
-#     @classmethod
-#     def count_vote(cls, user_id, pitch_id):
-#         retrieved_votes = Vote.query.filter(user_id==user_id,pitch_id==pitch_id).with_entities(Vote.vote_count).count()
-#         return retrieved_votes
+class Feedback(db.Model):
+     __tablename__ = 'feedbacks'
+     id = db.Column(db.Integer, primary_key = True)
+     title = db.Column(db.String(255))
+     feedback = db.Column(db.String(255))
+     user_id = db.Column(db.Integer, db.ForeignKey("users.id") )
+     pitch_id = db.Column(db.Integer, db.ForeignKey("pitches.id") )
+     pitch_id  = db.Column(db.Integer)
+
+     def save_feedback(self):
+        db.session.add(self)
+        db.session.commit()
+
+     @classmethod
+     def get_feedbacks(cls,pitch_id):
+         feedbacks= Feedback.query.filter_by(pitch_id=pitch_id).all()
+         return feedbacks

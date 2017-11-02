@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% import 'macros.html' as macro%}
 
 
 
@@ -10,12 +11,17 @@
 
       <a href="/new-pitch">
       <h3> make a pitch</h3></a>
+      <br>
+      <h3> all pitches</h3>
         {% for pitch in pitches %}
         <ul>
-          {{pitch.name}}
+
+          <a href="/pitch/{{pitch.id}}">PITCH TITLE: {{pitch.title}}</a>
+            <br>
+            
+        </ul>
 
         {% endfor %}
+    {% endblock %}
+
     </div>
-
-
-{% endblock %}
