@@ -1,13 +1,37 @@
-{% macro displayPitchList(Pitch_list) %}
-
-    {% for pitch in pitch_list %}
-        <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2 movie-card">
-            <li class="text-center">
-                <a href="/pitch/{{pitch.id}}">
-                    {{ pitch.title|truncate(10)}}</a>
-            </li>
-        </div>
-
+{% macro displayCategories(category_list) %}
+    {% for category in category_list %}
+        <li>
+            <a class=" btn btn-default" href="/category/{{category.id}}"><h3>{{category.name}}</h3></a>
+        </li>
     {% endfor %}
+{% endmacro %}
 
+{% macro displayPitches(pitch_list) %}
+    {% for pitch in pitch_list %}
+        <div class="well col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+            <div>
+                <div>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                    <h4>{{pitch.user.username}}</h4>
+                </div>
+              </div>
+          <div>
+              <h2>{{pitch.title}}</h2>
+              <p>{{pitch.body}}</p>
+          </div>
+          <a href="/pitch/feedbacks/{{pitch.id}}">View pitches</a>
+      </div>
+  {% endfor %}
+{% endmacro %}
+
+{% macro displayFeedbacks(feedback_list) %}
+  {% for feedback in feedback_list %}
+      <div>
+          <li>
+              <h3>{{feedback.feedback}}</h3>
+              <p>by {{feedback.user.username}}</p>
+          </li>
+      </div>
+  {% endfor %}
 {% endmacro %}

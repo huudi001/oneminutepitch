@@ -1,27 +1,24 @@
-{% extends 'base.html'%}
-{% import 'macros.html' as macro%}
+% extends 'base.html' %}
+{% import 'macros.html' as macro %}
+<!-- styles block -->
+{% block styles %}
+    {{ super() }}
 
+    <link rel="stylesheet" href="{{url_for('static', filename = 'css/styles.css')}}">
 
+{% endblock %}
 
+<!-- content block -->
 {% block content %}
-
-    <title> {{ title }} </title>
-
-    <div class="container">
-
-      <a href="/new-pitch">
-      <h3> make a pitch</h3></a>
-      <br>
-      <h3> all pitches</h3>
-        {% for pitch in pitches %}
-        <ul>
-
-          <a href="/pitch/{{pitch.id}}">PITCH TITLE: {{pitch.title}}</a>
-            <br>
-            
+    <div class="container" id="index-container">
+        <div class="row welcome">
+            <h1 id="title-home">One Minute Pitch</h1>
+            <h3>You have 60 seconds. That's all you have to impress someone. Use that minute wisely here.
+                <a href="authenticate/register">Register</a>, <a href="/authenticate/login">Sign In,</a>
+                and pitch your ideas in the different categories below! </h3>
+        </div>
+        <ul class="category-list text-center">
+            {{macro.displayCategories(category)}}
         </ul>
-
-        {% endfor %}
-    {% endblock %}
-
     </div>
+{% endblock %}

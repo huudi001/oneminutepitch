@@ -1,32 +1,17 @@
-{ %block content %}
-<title> {{ title }} </title>
-{% for category in get_categories() %}
-            <div class="container">
-              <ul>
-                <h1> LIST OF {{category.name }} <H1/>
-              </ul>
+{% extends 'base.html' %}
+{% import 'macros.html' as macro %}
 
-
-
-         </div>
-
-
-
- {% endfor %}
- <div>
-   <h3>
-   <a href="/category/pitch/new/{{category.id}}">
-     MAKE A PITCH
-
-     </a>
-
-  </h3>
+{% block content%}
+<div class="container">
+    <div class="row" >
+        <h3>{{category.name}} Ideas</h3> <a class="btn btn-info" href="/category/pitch/new/{{category.id}}">Pitch your idea here</a><br>
+    </div>
+    <div class="row">
+       {% if pitch %}
+           {{macro.displayPitches(pitch)}}
+       {% else %}
+           <h3 class="text-center"></h3>
+       {% endif %}
+   </div>
 </div>
-
-
-
-
-
-
-
- {% endblock %}
+{% endblock%}

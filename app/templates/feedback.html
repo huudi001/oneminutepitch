@@ -1,0 +1,17 @@
+% extends 'base.html' %}
+{% import 'macros.html' as macro %}
+
+{% block content %}
+    <div class="container">
+        <div>
+            <a href="/pitch/feedback/new/{{pitch.id}}"><h3>Create a feedback</h3></a>
+            {% if feedback %}
+                <ul>
+                    {{ macro.displayFeedbacks(feedback) }}
+                </ul>
+            {% else %}
+                <h3>be the first to give feedback</h3>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
