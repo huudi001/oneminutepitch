@@ -1,14 +1,14 @@
-{% extends 'base.html' %}
-{% import 'macros.html' as macro %}
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
 
 {% block content %}
-    <div class="container">
-        <div class="row welcome">
-            <h1 id="title-home">One Minute Pitch</h1>
-            <h3> pick a category below and  pitch.</h3>
-            <ul class="category-list text-center">
-              {{macro.displayCategories(category)}}
-           </ul>
-        </div>
-    </div>
+
+<div class="container">
+  <h3 style="text-align:center;">pick a category</h3>
+  <ul>
+    {{ macro.displayCategoryList(categories) }}
+
+  </ul>
+</div>
+
 {% endblock %}

@@ -1,71 +1,77 @@
-from flask import render_template,redirect,url_for
-from .. import db
-from flask_login import login_user,logout_user,login_required,current_user
+from flask import render_template,redirect,url_for,abort
 from . import main
-from ..models import User,Pitch,Feedback,Category
+from ..models import Category, User,Pitch, Feedback
+from .. import db
+from flask_login import login_required, current_user
 from .forms import PitchForm,FeedbackForm
-
 @main.route('/')
 def index():
-    category = Category.query.all()
-    title = 'Home'
-    return render_template('index.html', title = title, category= category)
 
-@main.route('/new-pitch', methods = ['GET','POST'])
+    categories = Category.get_categories()
+    title = 'Home - Welcome to One Minute Pitch'
+    return render_template('index.html', title = title, categories = categories)
 
 @main.route('/category/<int:id>')
 def category(id):
+
     category = Category.query.get(id)
-    title = {category.name}
-    pitch = Pitch.get_pitches(category.id)
 
-    return render_template('category.html', title = title, category = category, pitch = pitch)
+    if category is None:
+        abort(404)
 
-@main.route('/category/pitch/new/<int:id>', methods = ["GET", "POST"])
+    pitches = Pitch.get_pitches(id)
+    title = "Pitches"
+    return render_template('category.html', title = title, category = category,pitches = pitches)
+
+@main.route('/category/pitch/new/<int:id>', methods = ['GET','POST'])
 @login_required
 def new_pitch(id):
-
     form = PitchForm()
-    category = Category.query.filter_by(id = id).first()
-    if form.validate_on_submit():
-        title = form.title.data
-        body = form.body.data
+    category = Category.query.filter_by(id=id).first()
 
-        new_pitch = Pitch(category_id = category.id, title = title, body = body, user = current_user)
+    if category is None:
+        abort(404)
+
+    if form.validate_on_submit():
+        content = form.content.data
+        # user = current_user._get_current_object()
+        new_pitch = Pitch(content=content,user_id=current_user.id,category_id=category.id)
         new_pitch.save_pitch()
         return redirect(url_for('.category', id = category.id))
-    title = {category.name}
-    return render_template('new_pitch.html', title = title, pitch_form = form, category = category)
 
-@main.route('/pitch/feedback/new/<int:id>', methods = ['GET','POST'])
+    title = 'New pitch'
+    return render_template('new_pitch.html', title = title, pitch_form = form)
+
+# Dynamic routing for one pitch
+@main.route('/pitch/<int:id>', methods = ['GET','POST'])
+@login_required
+def single_pitch(id):
+
+    pitches = Pitch.query.get(id)
+
+    if pitches is None:
+        abort(404)
+
+    feedback = Feedback.get_feedback(id)
+    title = 'feedback Section'
+    return render_template('feedback.html', title = title, pitches = pitches, feedback = feedback)
+
+
+
+@main.route('/pitch/new/<int:id>', methods = ['GET','POST'])
 @login_required
 def new_feedback(id):
     form = FeedbackForm()
-    pitch = Pitch.query.filter_by(id = id).first()
+    pitches = Pitch.query.filter_by(id=id).first()
+
+    if pitches is None:
+        abort(404)
+
     if form.validate_on_submit():
-        feedback = form.feedback.data
+        feedback_section_id = form.feedback_section_id.data
+        new_feedback = Feedback(feedback_section_id=feedback_section_id,user_id=current_user.id,pitches_id=pitches.id)
         new_feedback.save_feedback()
-        return redirect(url_for('.feedback', id = pitch.id ))
-    title = {pitch.title}
-    return render_template('new_feedback.html', title = title, feedback_form = form, pitch = pitch)
+        return redirect(url_for('.category', id = pitches.id))
 
-@main.route('/pitch/feedbacks/<int:id>')
-def feedbacks(id):
-    pitch = Pitch.query.get(id)
-    feedback = Feedback.get_feedbacks(pitch.id)
-    title = {pitch.title}
-
-    return render_template('feedbacks.html', title = title, pitch = pitch, feedback = feedback)
-
-@main.route('/feedback/<int:id>',methods =['GET','POST'])
-def feedback(id):
-    feedback_form = FeedbackForm()
-    if feedback_form.validate_on_submit():
-        title =   feedback_form.title.data
-        feedback =  feedback_form.feedback.data
-        new_feedback = Feedback(title= title, feedback = feedback)
-        db.session.add(new_feedback)
-        db.session.commit()
-        return redirect(url_for('main.index'))
-
-    return render_template('new_feedback.html', feedback_form = feedback_form)
+    title = 'New Feedback'
+    return render_template('feedbacks.html', title = title, feedback_form = form)

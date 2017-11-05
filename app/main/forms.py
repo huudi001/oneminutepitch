@@ -1,17 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,TextAreaField,SubmitField,SelectField
-from wtforms.validators import Required
-
-class FeedbackForm(FlaskForm):
-
-    title = StringField('Feedback title',validators=[Required()])
-    feedback = TextAreaField(' feedback', validators=[Required()])
-    submit = SubmitField('Submit')
-
+from wtforms import StringField,TextAreaField,SubmitField
 
 class PitchForm(FlaskForm):
+    content = TextAreaField('New Pitch')
+    submit = SubmitField('Submit')
 
-    choice = [("science","science"),("technology", "technology"),("entertainment","entertainment")]
-    title = StringField('Pitch title',validators=[Required()])
-    body= TextAreaField('Pitch body', validators=[Required()])
+class FeedbackForm(FlaskForm):
+    feedback_section_id = TextAreaField('New feedback')
     submit = SubmitField('Submit')

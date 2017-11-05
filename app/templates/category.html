@@ -1,17 +1,14 @@
-{% extends 'base.html' %}
-{% import 'macros.html' as macro %}
+{% extends 'base.html' %} {% import 'macros.html' as macro%}
+{%block styles%}
+ {{ super() }}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
 
-{% block content%}
-<div class="container">
-    <div class="row" >
-        <h3>{{category.name}} Ideas</h3> <a class="btn btn-info" href="/category/pitch/new/{{category.id}}">Pitch your idea here</a><br>
-    </div>
-    <div class="row">
-       {% if pitch %}
-           {{macro.displayPitches(pitch)}}
-       {% else %}
-           <h3 class="text-center"></h3>
-       {% endif %}
-   </div>
-</div>
-{% endblock%}
+{%endblock%}
+
+{% block content %}
+<h3 class="text-center">you got a minute that will either make you or break you </h3>
+<hr> {% if pitches %} {{ macro.displayPitches(pitches)}} {%else%}
+<h4>This Category has no Pitch</h4>{% endif %}
+<a class="btn btn-primary text-center text-danger" href="/category/pitch/new/{{category.id}}">Write a new Pitch</a>
+
+{% endblock %}
